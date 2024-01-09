@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SlideImage">
+        <attr name="leftBitmap" format="reference"/>
+        <attr name="rightBitmap" format="reference"/>
+    </declare-styleable>
+</resources>

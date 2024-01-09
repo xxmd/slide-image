@@ -25,9 +25,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    viewBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -50,7 +47,7 @@ ext {
     publishedGroupId = 'io.github.xxmd'
     artifact = rootProject.name
     libraryVersion = '1.0.0'
-    libraryDescription = ''
+    libraryDescription = 'Touch slide between two images'
     siteUrl = 'https://github.com/xxmd/' + rootProject.name
 }
 
