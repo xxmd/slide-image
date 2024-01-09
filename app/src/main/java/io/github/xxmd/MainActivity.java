@@ -15,5 +15,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        bindEvent();
+    }
+
+    private void bindEvent() {
+        binding.btnSet.setOnClickListener(v -> {
+            binding.slideImage.setLeftBitmap(R.drawable.old);
+            binding.slideImage.setRightBitmap(R.drawable.refresh);
+        });
     }
 }

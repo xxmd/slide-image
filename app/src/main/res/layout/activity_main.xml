@@ -7,9 +7,14 @@
     android:orientation="vertical">
 
     <io.github.xxmd.SlideImage
-        app:leftBitmap="@drawable/old"
-        app:rightBitmap="@drawable/refresh"
+        android:id="@+id/slide_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btn_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"/>
 
 </LinearLayout>

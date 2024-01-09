@@ -14,10 +14,12 @@ import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
@@ -31,12 +33,37 @@ public class SlideImage extends View {
     private int canvasWidth;
     private Paint arrowPaint;
     private TypedArray typedArray;
+    private int preWidthMeasureSpec;
+    private int preHeightMeasureSpec;
 
     public SlideImage(Context context, Bitmap leftBitmap, Bitmap rightBitmap) {
         super(context);
         this.leftBitmap = leftBitmap;
         this.rightBitmap = rightBitmap;
         init();
+    }
+
+    public void setLeftBitmap(@DrawableRes int resourceId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+        setLeftBitmap(bitmap);
+    }
+
+    public void setLeftBitmap(Bitmap leftBitmap) {
+        this.leftBitmap = leftBitmap;
+        requestLayout();
+    }
+
+    public void setRightBitmap(@DrawableRes int resourceId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resourceId);
+        setRightBitmap(bitmap);
+    }
+
+    public void setRightBitmap(Bitmap rightBitmap) {
+        this.rightBitmap = rightBitmap;
+        requestLayout();
+    }
+
+    private void reMeasure() {
     }
 
     public SlideImage(Context context, @Nullable AttributeSet attrs) {
@@ -50,22 +77,17 @@ public class SlideImage extends View {
             initByTypedArray();
         }
         initPaint();
-        initBitmap();
     }
 
     private void initByTypedArray() {
         BitmapDrawable leftDrawable = (BitmapDrawable) typedArray.getDrawable(R.styleable.SlideImage_leftBitmap);
         BitmapDrawable rightDrawable = (BitmapDrawable) typedArray.getDrawable(R.styleable.SlideImage_rightBitmap);
         if (leftDrawable == null || rightDrawable == null) {
-            throw new IllegalArgumentException("leftBitmap and rightBitmap can not be null");
+            Log.e(SlideImage.class.getName(), "leftBitmap and rightBitmap can not be null");
+            return;
         }
         leftBitmap = leftDrawable.getBitmap();
         rightBitmap = rightDrawable.getBitmap();
-    }
-
-    private void initBitmap() {
-//        leftBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.broken_picture);
-//        rightBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.recover_picture);
     }
 
     private void initPaint() {
@@ -81,6 +103,10 @@ public class SlideImage extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if (leftBitmap == null || rightBitmap == null) {
+            Log.e(SlideImage.class.getName(), "leftBitmap and rightBitmap can not be null");
+            return;
+        }
         canvasWidth = canvas.getWidth();
         indicatorRadius = canvasWidth * 0.04f;
         drawLeftImage(canvas);
@@ -166,6 +192,13 @@ public class SlideImage extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (leftBitmap == null || rightBitmap == null) {
+            Log.e(SlideImage.class.getName(), "leftBitmap and rightBitmap can not be null");
+            setMeasuredDimension(0, 0);
+            preWidthMeasureSpec = widthMeasureSpec;
+            preHeightMeasureSpec = heightMeasureSpec;
+            return;
+        }
         float ratio = leftBitmap.getWidth() * 1.0f / leftBitmap.getHeight();
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
