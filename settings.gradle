@@ -1,0 +1,3 @@
+rootProject.name = "slide-image"
+include ':app'
+include ':mylibrary'
